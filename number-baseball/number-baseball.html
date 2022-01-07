@@ -17,20 +17,30 @@
             const $input = $form.querySelector('#input');
             const $logs = document.querySelector('#logs');
 
-            const numbers = [];
-            for (let n = 1; n <= 9; n++) {
-                numbers.push(n);
-            }
+            let numbers = [];
+            let answer = [];
+            let tries = [];
+            let out = 0;
 
-            const answer = [];
-            for (let n = 0; n <= 3; n++) {
-                const index = Math.floor(Math.random() * numbers.length);
-                answer.push(numbers[index]);
-                numbers.splice(index, 1);
-            }
-            console.log(answer);
+            const init = () => {
+                numbers = [];
+                answer = [];
+                tries = [];
+                out = 0;
+                $logs.textContent = '';
 
-            const tries = [];
+                for (let n = 1; n <= 9; n += 1) {
+                    numbers.push(n);
+                }
+
+                for (let n = 0; n <= 3; n += 1) {
+                    const index = Math.floor(Math.random() * numbers.length);
+                    answer.push(numbers[index]);
+                    numbers.splice(index, 1);
+                }
+
+                console.log(answer);
+            };
 
             function checkInput(input) {
                 if (input.length !== 4) {
@@ -45,23 +55,23 @@
                 return true;
             }
 
-            let out = 0;
             $form.addEventListener('submit', e => {
                 e.preventDefault();
                 const value = $input.value;
                 $input.value = '';
                 const valid = checkInput(value);
+
                 if (!valid) return;
+
                 if (answer.join('') === value) {
-                    $logs.textContent = '홈런!';
+                    alert('홈런!');
+                    init();
                     return;
                 }
 
                 if (tries.length >= 9) {
-                    const message = document.createTextNode(
-                        `패배! 정답은 ${answer.join('')}`
-                    );
-                    $logs.appendChild(message);
+                    alert(`패배! 정답은 ${answer.join('')}`);
+                    init();
                     return;
                 }
 
@@ -89,15 +99,15 @@
                 );
 
                 if (out === 3) {
-                    const message = document.createTextNode(
-                        `패배! 정답은 ${answer.join('')}`
-                    );
-                    $logs.appendChild(message);
+                    alert(`패배! 정답은 ${answer.join('')}`);
+                    init();
                     return;
                 }
 
                 tries.push(value);
             });
+
+            init();
         </script>
     </body>
 </html>
