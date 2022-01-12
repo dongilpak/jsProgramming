@@ -51,7 +51,9 @@
         <script>
             const $wrapper = document.querySelector('#wrapper');
 
-            const total = 12;
+            const total = parseInt(
+                prompt('카드 개수를 짝수로 입력하세요(최대 20).')
+            );
             const colors = [
                 'red',
                 'orange',
@@ -59,12 +61,18 @@
                 'green',
                 'white',
                 'pink',
+                'cyan',
+                'violet',
+                'gray',
+                'black',
             ];
-            let colorCopy = colors.concat(colors);
+            let colorSlice = colors.slice(0, total / 2);
+            let colorCopy = colors.concat(colorSlice);
             let shuffled = [];
             let clicked = [];
             let completed = [];
             let clickable = false;
+            let startTime;
 
             function shuffle() {
                 for (let i = 0; colorCopy.length > 0; i++) {
@@ -120,8 +128,13 @@
                     if (completed.length !== total) {
                         return;
                     }
+                    const endTime = new Date();
                     setTimeout(() => {
-                        alert('축하합니다!');
+                        alert(
+                            `축하합니다. 소요된 시간 : ${
+                                (endTime - startTime) / 1000
+                            }ms`
+                        );
                         resetGame();
                     }, 800);
                     return;
@@ -155,6 +168,8 @@
                     });
                     clickable = true;
                 }, 5000);
+
+                startTime = new Date();
             }
 
             function resetGame() {
